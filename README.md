@@ -44,7 +44,7 @@ bower install
 cd web && php -S localhost:8080
 ```
 
-Now you can browse to http://localhost:8080/.
+Now you can browse to [http://localhost:8080/](http://localhost:8080/).
 
 
 Getting started with Silex
