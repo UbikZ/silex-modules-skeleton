@@ -1,0 +1,33 @@
+{
+    "name":"ubikz/silex-modules-skeleton",
+    "description": "A skeleton to get started with Silex with multi-modules",
+    "keywords": ["Skeleton", "Silex", "Modules"],
+    "homepage": "http://github.com/ubikz",
+    "license":"MIT",
+    "version":"0.0.1-dev",
+    "authors":[
+        {
+            "name": "Team",
+            "homepage": "https://github.com/UbikZ/silex-modules-skeleton/graphs/contributors"
+        }
+    ],
+    "require":{
+        "php":">=5.5",
+        "igorw/config-service-provider": "v1.2.2",
+        "monolog/monolog":"1.11.0",
+        "silex/silex":"v1.2.2",
+        "doctrine/dbal":"v2.5.0-RC2",
+        "twig/twig": "1.16.2",
+        "twig/extensions": "1.2.0"
+    },
+    "require-dev":{
+        "phpunit/phpunit":"3.7.*",
+        "squizlabs/php_codesniffer": "1.5.*",
+        "satooshi/php-coveralls": "dev-master"
+    },
+    "autoload":{
+        "psr-0":{
+            "":["src/", "tests/"]
+        }
+    }
+}
