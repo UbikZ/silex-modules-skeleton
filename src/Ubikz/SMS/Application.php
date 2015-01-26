@@ -3,7 +3,6 @@
 namespace Ubikz\SMS;
 
 use Doctrine\DBAL\Configuration;
-use Doctrine\DBAL\Driver\PDOConnection;
 use Doctrine\DBAL\DriverManager;
 use Igorw\Silex\ConfigServiceProvider;
 use Monolog\Handler\StreamHandler;
@@ -80,7 +79,7 @@ class Application
      */
     private function registerGlobalConfiguration()
     {
-        Server::getInstance()->register(new ConfigServiceProvider(ConfHelper::getFile('config.yml')));
+        Server::getInstance()->register(new ConfigServiceProvider(ConfHelper::getMainFile('config.yml')));
         $conf = Server::getService('conf.app');
 
         // Silex debugging

@@ -1,4 +1,4 @@
-conf.routes:
+conf.routes.authentication:
   index:
     pattern:  /
     defaults: { _controller: 'IndexController::indexAction' }

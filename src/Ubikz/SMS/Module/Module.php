@@ -4,7 +4,9 @@ namespace Ubikz\SMS\Module;
 
 use Igorw\Silex\ConfigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Ubikz\SMS\Exception\InvalidModuleNameException;
+use Ubikz\SMS\Helper\Configuration as ConfHelper;
 use Ubikz\SMS\Server;
 
 /**
@@ -25,8 +27,9 @@ abstract class Module implements IModule
         if (is_null($this->getModuleName())) {
             throw new InvalidModuleNameException('A module can\'t be initialized without proper name.');
         }
-        $this->initServiceTmplEngine();
-        $this->registerRoutes();
+        $this->initModuleTemplate();
+        $this->initModuleConfiguration();
+        $this->initModuleRouter();
     }
 
     /**
@@ -38,12 +41,30 @@ abstract class Module implements IModule
     }
 
     /**
+     * @return mixed
+     */
+    public function getModuleConfiguration()
+    {
+        return Server::getService(sprintf('conf.app.%s', strtolower($this->getModuleName())));
+    }
+
+    /**
+     * @throws InvalidConfigurationException
+     */
+    protected function initModuleConfiguration()
+    {
+        Server::getInstance()->register(new ConfigServiceProvider(
+            ConfHelper::getModuleFile(sprintf('%s/%s/config/config.yml', __DIR__, $this->getModuleName()))
+        ));
+    }
+
+    /**
      *
      */
-    protected function initServiceTmplEngine()
+    protected function initModuleTemplate()
     {
         $app = Server::getInstance();
-        $viewPath = sprintf('%s/%s/View', __DIR__, $this->getModuleName());
+        $viewPath = sprintf('%s/%s/view', __DIR__, $this->getModuleName());
 
         // We temporally set the view path
         Server::setService('twig.path', $viewPath);
@@ -54,7 +75,7 @@ abstract class Module implements IModule
             if (!is_null($route = $request->attributes->get('_controller')) && is_string($route)) {
                 $regexp = '/^.+\\\(\w+)Controller::(\w+)Action$/i';
                 // Default template
-                $twigTmpl = ucfirst(strtolower(preg_replace($regexp, '${1}/${2}.twig', $route)));
+                $twigTmpl = strtolower(preg_replace($regexp, '${1}/${2}.twig', $route));
                 if (!empty($twigTmpl) && file_exists(sprintf('%s/%s', $viewPath, $twigTmpl))) {
                     Server::setService('twig.currentTmpl', $twigTmpl);
                 }
@@ -70,12 +91,12 @@ abstract class Module implements IModule
     /**
      *  Routes registration from Yaml configuration file (with version management)
      */
-    private function registerRoutes()
+    private function initModuleRouter()
     {
         Server::getInstance()->register(
-            new ConfigServiceProvider(sprintf('%s/%s/Config/Route/routes.yml', __DIR__, $this->getModuleName()))
+            new ConfigServiceProvider(sprintf('%s/%s/config/routes.yml', __DIR__, $this->getModuleName()))
         );
-        $conf = Server::getService('conf.routes');
+        $conf = Server::getService(sprintf('conf.routes.%s', strtolower($this->getModuleName())));
         if (is_array($conf)) {
             foreach ($conf as $name => $route) {
                 Server::getInstance()->match(
