@@ -1,0 +1,5 @@
+conf.routes:
+  index:
+    pattern:  /
+    defaults: { _controller: 'IndexController::indexAction' }
+    method: GET

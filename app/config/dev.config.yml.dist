@@ -1,0 +1,28 @@
+conf.app:
+  php_settings:
+    display_errors: true
+    display_startup_errors: true
+    error_log: ../../data/logs/php.log
+
+  silex:
+    debug: true
+    modules:
+      0: authentication
+      1: frontoffice
+      2: backoffice
+      3: api
+
+  monolog:
+    app: app.log
+    handlers:
+      sql: sql.log
+      controller: controller.log
+
+  database:
+    adapter: pdo
+    driver: pdo_mysql
+    host: localhost
+    dbname: db_name
+    user: root
+    password: password
+    charset: utf8

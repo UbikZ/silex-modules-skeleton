@@ -1,0 +1,32 @@
+conf.app:
+  php_settings:
+    display_errors: false
+    display_startup_errors: false
+    error_log: ../../data/logs/php.log
+
+  silex:
+    debug: false
+    modules:
+      0: authentication
+      1: frontoffice
+      2: backoffice
+      3: api
+
+  monolog:
+    handlers:
+      main:
+        path: /app.log
+      sql:
+        path: /sql.log
+      controller:
+        path: /controller.log
+
+  database:
+    dal_adapter: DoctrineDbal
+    driver: pdo_mysql
+    host: localhost
+    dbname: db_name
+    user: root
+    password: password
+    charset: utf8
+    driver: pdo_mysql
