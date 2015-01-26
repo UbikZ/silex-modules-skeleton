@@ -8,9 +8,6 @@ conf.app:
     debug: true
     modules:
       0: authentication
-      1: frontoffice
-      2: backoffice
-      3: api
 
   monolog:
     app: app.log
@@ -18,11 +15,14 @@ conf.app:
       sql: sql.log
       controller: controller.log
 
+  template:
+    engine: twig
+
   database:
-    adapter: pdo
+    adapter: Mysql
     driver: pdo_mysql
     host: localhost
-    dbname: db_name
+    dbname: test
     user: root
-    password: password
+    password: toor
     charset: utf8

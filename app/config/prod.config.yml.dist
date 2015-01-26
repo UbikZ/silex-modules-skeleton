@@ -1,32 +1,28 @@
 conf.app:
   php_settings:
-    display_errors: true
-    display_startup_errors: true
+    display_errors: false
+    display_startup_errors: false
     error_log: ../../data/logs/php.log
 
   silex:
-    debug: true
+    debug: false
     modules:
       0: authentication
-      1: frontoffice
-      2: backoffice
-      3: api
 
   monolog:
+    app: app.log
     handlers:
-      main:
-        path: /app.log
-      sql:
-        path: /sql.log
-      controller:
-        path: /controller.log
+      sql: sql.log
+      controller: controller.log
+
+  template:
+    engine: twig
 
   database:
-    dal_adapter: DoctrineDbal
+    adapter: Mysql
     driver: pdo_mysql
     host: localhost
-    dbname: db_name
+    dbname: test
     user: root
-    password: password
+    password: toor
     charset: utf8
-    driver: pdo_mysql
