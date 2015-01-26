@@ -43,7 +43,7 @@ abstract class Module implements IModule
     protected function initServiceTmplEngine()
     {
         $app = Server::getInstance();
-        $viewPath = sprintf('%s/%s/View/Script', __DIR__, $this->getModuleName());
+        $viewPath = sprintf('%s/%s/View', __DIR__, $this->getModuleName());
 
         // We temporally set the view path
         Server::setService('twig.path', $viewPath);
