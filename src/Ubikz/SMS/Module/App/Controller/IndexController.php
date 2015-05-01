@@ -2,7 +2,7 @@
 
 namespace Ubikz\SMS\Module\App\Controller;
 
-use Exaprint\Preflight\Controller\AbstractController;
+use Ubikz\SMS\Core\Controller\AbstractController;
 
 /**
  * Class IndexController
@@ -10,5 +10,11 @@ use Exaprint\Preflight\Controller\AbstractController;
  */
 class IndexController extends AbstractController
 {
-
+    /**
+     *
+     */
+    public function indexAction()
+    {
+        return $this->render();
+    }
 }
