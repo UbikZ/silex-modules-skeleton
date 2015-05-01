@@ -1,14 +1,13 @@
 <?php
 
-namespace Exaprint\Preflight\Controller;
+namespace Ubikz\SMS\Core\Controller;
 
-use Silex\Controller;
 use Ubikz\SMS\Core\Silex\Layout as SilexLayout;
 
 /**
  * Class AbstractController
  * @package Exaprint\Preflight\Controller */
-abstract class AbstractController extends Controller
+abstract class AbstractController
 {
     /**
      * @param $url

@@ -11,8 +11,8 @@ use Silex\Provider\TwigServiceProvider;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
-use Ubikz\SMS\Code\Db\Configuration\ArrayConfig;
-use Ubikz\SMS\Code\Db\Connection;
+use Ubikz\SMS\Core\Db\Configuration\ArrayConfig;
+use Ubikz\SMS\Core\Db\Connection;
 use Ubikz\SMS\Core\Exception\ErrorSQLStatementException;
 use Ubikz\SMS\Core\Exception\InvalidExtensionException;
 use Ubikz\SMS\Core\Exception\InvalidFileException;
@@ -26,6 +26,9 @@ class Application
 {
     /** @var bool  */
     public $debug = false;
+
+    /** @var array  */
+    public $conf = [];
 
     /**
      * @throws InvalidConfigurationException
@@ -45,7 +48,9 @@ class Application
         try {
             $this->registerErrorHandler();
             $this->registerLogger();
+            $this->registerRoutes();
             $this->registerDatabase();
+            $this->registerMailer();
             $this->registerTemplateEngine();
 
             SilexLayout::getInstance()->run();
@@ -97,8 +102,8 @@ class Application
             SilexLayout::getService('parameters'))
         );
 
-        $conf = SilexLayout::getService('config.app');
-        $confApp = $conf['application'];
+        $this->conf = SilexLayout::getService('config.app');
+        $confApp = $this->conf['application'];
 
         // Silex debugging
         SilexLayout::setService('debug', $this->debug = isset($confApp['debug']) ? $confApp['debug'] : false);
@@ -118,12 +123,11 @@ class Application
      */
     private function registerDatabase()
     {
-        $conf = SilexLayout::getService('config.app');
-        if (!isset($conf['database'])) {
+        if (!isset($this->conf['database'])) {
             throw new InvalidConfigurationException('Configuration for `database` does not exist');
         }
 
-        SilexLayout::setService('database', new Connection(new ArrayConfig($conf['database'])));
+        SilexLayout::setService('database', new Connection(new ArrayConfig($this->conf['database'])));
     }
 
     /**
@@ -131,12 +135,11 @@ class Application
      */
     private function registerMailer()
     {
-        $conf = SilexLayout::getService('config.app');
-        if (!isset($conf['mailer'])) {
+        if (!isset($this->conf['mailer'])) {
             throw new InvalidConfigurationException('Configuration for `mailer` does not exist');
         }
 
-        $mailerConf = $conf['mailer'];
+        $mailerConf = $this->conf['mailer'];
         SilexLayout::getInstance()->register(new SwiftmailerServiceProvider(), [
             'swiftmailer.options' => [
                 'host'          =>  $mailerConf['host'],
@@ -154,8 +157,7 @@ class Application
      */
     private function registerTemplateEngine()
     {
-        $conf = SilexLayout::getService('config.app');
-        $confApp = $conf['application'];
+        $confApp = $this->conf['application'];
         if (!isset($confApp['template'])) {
             throw new InvalidConfigurationException('Configuration for `application.template` does not exist');
         }
@@ -164,8 +166,12 @@ class Application
         }
 
         // We register the default engine
-        $viewPath = ROOT_PATH.'/'.$confApp['template']['path'];
-        SilexLayout::getInstance()->register(new TwigServiceProvider(), ['twig.path' => $viewPath]);
+        $folderName = $confApp['template']['path'];
+        $viewPaths = array_map(
+            function($n) use ($folderName) { return MODULE_PATH.'/'.ucfirst($n).'/Resources/'.$folderName; },
+            isset($confApp['modules']) && is_array($confApp['modules']) ? $confApp['modules'] : []
+        );
+        SilexLayout::getInstance()->register(new TwigServiceProvider(), ['twig.path' => $viewPaths]);
 
         // We define twig globals, filters, extensions etc. (if needed)
         $app = SilexLayout::getInstance();
@@ -183,17 +189,45 @@ class Application
         })));
 
         // We "hack" the dispatcher to "auto" redirect to defined views
-        $app->before(function ($request) use ($app, $viewPath) {
+        $app->before(function ($request) use ($app, $viewPaths) {
             /* @var \Symfony\Component\HttpFoundation\Request $request */
             if (!is_null($route = $request->attributes->get('_controller')) && is_string($route)) {
                 $regexp = '/^.+\\\(\w+)Controller::(\w+)Action$/i';
                 // Default template
-                $twigTmpl = strtolower(preg_replace($regexp, '${1}/${2}.twig', $route));
-                if (!empty($twigTmpl) && file_exists(sprintf('%s/%s', $viewPath, $twigTmpl))) {
-                    SilexLayout::setService('twig.currentTmpl', $twigTmpl);
+                $twigTmpl = preg_replace($regexp, '${1}/${2}.twig', $route);
+                foreach ($viewPaths as $viewPath) {
+                    if (!empty($twigTmpl) && file_exists(sprintf('%s/%s', $viewPath, $twigTmpl))) {
+                        SilexLayout::setService('twig.currentTmpl', $twigTmpl);
+                        break;
+                    }
                 }
             }
         });
+    }
+
+    /**
+     *
+     */
+    private function registerRoutes()
+    {
+        $confApp = $this->conf['application'];
+        $modules = isset($confApp['modules']) && is_array($confApp['modules']) ? $confApp['modules'] : [];
+
+        foreach ($modules as $module) {
+            SilexLayout::getInstance()->register(new ConfigServiceProvider(
+                MODULE_PATH.'/'.ucfirst($module).'/Resources/config/routes.yml'
+            ));
+            $conf = SilexLayout::getService('config.routes.'.strtolower($module));
+
+            if (is_array($conf)) {
+                foreach ($conf as $name => $route) {
+                    SilexLayout::getInstance()->match(
+                        $route['pattern'],
+                        sprintf('Ubikz\\SMS\\Module\\%s\\Controller\\%s', ucfirst($module), $route['defaults']['_controller'])
+                    )->bind($name)->method(isset($route['method']) ? $route['method'] : 'GET');
+                }
+            }
+        }
     }
 
     /**
@@ -203,8 +237,8 @@ class Application
      */
     public function registerLogger()
     {
-        $conf = SilexLayout::getService('config.app');
-        $confApp = $conf['application'];
+        $confApp = $this->conf['application'];
+        $modules = isset($confApp['modules']) && is_array($confApp['modules']) ? $confApp['modules'] : [];
 
         if (!isset($confApp['logger'])) {
             throw new InvalidConfigurationException('Configuration for `application.logger` does not exist');
@@ -224,8 +258,8 @@ class Application
             'monolog.logfile' => $logPath.'/'.APPLICATION_ENV.'.log',
         ]);
 
-        // Register new channels
-        foreach ($channels as $channel) {
+        // Register new channels (specific channels + modules one)
+        foreach ($channels + $modules as $channel) {
             SilexLayout::setService('monolog.'.$channel, SilexLayout::getInstance()->share(
                 function ($app) use ($logPath, $channel) {
                     /** @var Logger $log */
