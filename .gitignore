@@ -1,5 +1,7 @@
 vendor/
 composer.lock
-web/lib/
-app/config/*.yml
+node_modules
+web/static/dist
+web/static/vendor
+app/config/parameters.yml
 .idea
