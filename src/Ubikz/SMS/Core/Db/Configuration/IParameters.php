@@ -1,10 +1,10 @@
 <?php
 
-namespace Ubikz\SMS\Code\Db\Configuration;
+namespace Ubikz\SMS\Core\Db\Configuration;
 
 /**
  * Interface IParameters
- * @package Ubikz\SMS\Code\Db\Configuration
+ * @package Ubikz\SMS\Core\Db\Configuration
  */
 interface IParameters
 {

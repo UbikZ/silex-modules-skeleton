@@ -1,14 +1,14 @@
 <?php
 
-namespace Ubikz\SMS\Code\Db;
+namespace Ubikz\SMS\Core\Db;
 
-use Ubikz\SMS\Code\Db\Configuration\IParameters;
+use Ubikz\SMS\Core\Db\Configuration\IParameters;
 use Ubikz\SMS\Core\Db\StaticFactory;
 use Ubikz\SMS\Db\Adapter\AbstractAdapter;
 
 /**
  * Class Connection
- * @package Ubikz\SMS\Code\Db
+ * @package Ubikz\SMS\Core\Db
  */
 class Connection
 {

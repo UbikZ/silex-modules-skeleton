@@ -1,6 +1,6 @@
 <?php
 
-namespace Ubikz\SMS\Code\Db\Configuration;
+namespace Ubikz\SMS\Core\Db\Configuration;
 
 class ArrayConfig extends AbstractConfig implements IParameters
 {
