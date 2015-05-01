@@ -1,0 +1,24 @@
+parameters:
+  database_adapter:  mysql
+  database_host:     localhost
+  database_port:     ~
+  database_name:     database
+  database_user:     root
+  database_password: toor
+  database_charset:  utf8
+
+  settings_errors:        false
+  settings_statup_errors: false
+  settings_error_log:     php_error.log
+
+  app_debug:          true
+  app_upload_path:    web/uploads
+  app_template_path:  views
+  app_log_path:       app/logs
+
+  mailer_host:        host
+  mailer_port:        25
+  mailer_username:    username
+  mailer_password:    password
+  mailer_encryption:  ~
+  mailer_auth_mode:   ~
