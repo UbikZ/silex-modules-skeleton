@@ -1,0 +1,33 @@
+config.app:
+  php_settings:
+    display_errors:         "%settings_errors%"
+    display_startup_errors: "%settings_statup_errors%"
+    error_log:              "%app_log_path%/%settings_error_log%"
+
+  application:
+     modules:               [app]
+     debug:                 "%app_debug%"
+     upload:
+       path:                "%app_upload_path%"
+     template:
+       path:                "%app_template_path%"
+     logger:
+       path:                "%app_log_path%"
+       channels:            [controller, sql]
+
+  database:
+    adapter:  "%database_adapter%"
+    host:     "%database_host%"
+    dbname:   "%database_name%"
+    user:     "%database_user%"
+    password: "%database_password%"
+    charset:  "%database_charset%"
+    port:     "%database_port%"
+
+  mailer:
+    host:       "%mailer_host%"
+    port:       "%mailer_port%"
+    username:   "%mailer_username%"
+    password:   "%mailer_password%"
+    encryption: "%mailer_encryption%"
+    auth_mode:   "%mailer_auth_mode%"
