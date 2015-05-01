@@ -1,27 +1,20 @@
 <?php
 
-use Ubikz\SMS\Application;
+use Ubikz\SMS\Core\Application;
 
 defined('APPLICATION_ENV')
 || define('APPLICATION_ENV', getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : "dev");
 
-define('ROOT_PATH', __DIR__ . '/..');
-define('APP_PATH', ROOT_PATH . '/app');
-define('WEB_PATH', ROOT_PATH . '/web');
-define('SOURCE_PATH', ROOT_PATH . '/src');
-define('VENDOR_PATH', ROOT_PATH . '/vendor');
+define('ROOT_PATH', __DIR__.'/..');
+define('WEB_PATH', ROOT_PATH.'/web');
+define('APP_PATH', ROOT_PATH.'/app');
+define('SOURCE_PATH', ROOT_PATH.'/src');
+define('VENDOR_PATH', ROOT_PATH.'/vendor');
+define('LOG_PATH', APP_PATH.'/logs');
+define('CONF_PATH', APP_PATH.'/config');
+define('MODULE_PATH', SOURCE_PATH.'/Ubikz/SMS/Module');
 
-define('DATA_PATH', APP_PATH . '/data');
-define('CONF_PATH', APP_PATH . '/config');
-define('ROUTE_PATH', APP_PATH . '/route');
-
-define('CACHE_PATH', DATA_PATH . '/cache');
-define('FIXTURE_PATH', DATA_PATH . '/fixtures');
-define('LOG_PATH', DATA_PATH . '/logs');
-
-if (file_exists($path = VENDOR_PATH . '/autoload.php')) {
-    require $path;
-}
+require VENDOR_PATH.'/autoload.php';
 
 $app = new Application();
 $app->run();
