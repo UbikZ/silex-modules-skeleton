@@ -20,9 +20,4 @@ interface IParameters
      * @return mixed
      */
     public function set($key, $value);
-
-    /**
-     * @param array $conf
-     */
-    public function import(array $conf);
 }

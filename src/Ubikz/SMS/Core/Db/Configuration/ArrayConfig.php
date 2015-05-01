@@ -29,14 +29,4 @@ class ArrayConfig extends AbstractConfig implements IParameters
 
         return $this;
     }
-
-    /**
-     * @param array $conf
-     */
-    public function import(array $conf)
-    {
-        foreach ($conf as $key => $value) {
-            $this->addStorageParam($value, $key);
-        }
-    }
 }
