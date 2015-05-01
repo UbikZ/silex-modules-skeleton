@@ -16,7 +16,6 @@
         "igorw/config-service-provider": "v1.2.2",
         "monolog/monolog":"1.11.0",
         "silex/silex":"v1.2.2",
-        "doctrine/dbal":"v2.5.0-RC2",
         "twig/twig": "1.16.2",
         "twig/extensions": "1.2.0",
         "doctrine/dbal": "2.5.1",
@@ -30,7 +29,7 @@
     },
     "autoload":{
         "psr-0":{
-            "":["src/", "tests/"]
+            "": ["src/", "tests/"]
         }
     }
 }

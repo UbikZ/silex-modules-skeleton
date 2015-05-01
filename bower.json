@@ -2,7 +2,7 @@
     "name": "ubikz/silex-modules-skeleton",
     "version": "0.0.1-dev",
     "dependencies": {
-        "bootstrap": "3.3.1",
+        "bootstrap": "3.3.4",
         "components-font-awesome": "4.2.0"
     }
 }
