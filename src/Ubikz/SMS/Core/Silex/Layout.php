@@ -106,7 +106,7 @@ class Layout
     }
 
     /**
-     * @param null $channel
+     * @param null|string $channel
      *
      * @return Logger
      */
