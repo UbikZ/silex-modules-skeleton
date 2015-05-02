@@ -2,6 +2,8 @@ vendor/
 composer.lock
 node_modules
 web/static/dist
+web/static/js
+web/static/css
 web/static/vendor
 app/config/parameters.yml
 .idea
