@@ -3,7 +3,7 @@
 use Ubikz\SMS\Core\Application;
 
 defined('APPLICATION_ENV')
-|| define('APPLICATION_ENV', getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : "dev");
+|| define('APPLICATION_ENV', getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'dev');
 
 define('ROOT_PATH', __DIR__.'/..');
 define('WEB_PATH', ROOT_PATH.'/web');
