@@ -168,7 +168,7 @@ class Application
         // We register the default engine
         $folderName = $confApp['template']['path'];
         $viewPaths = array_map(
-            function($n) use ($folderName) { return MODULE_PATH.'/'.ucfirst($n).'/Resources/'.$folderName; },
+            function ($n) use ($folderName) { return MODULE_PATH.'/'.ucfirst($n).'/Resources/'.$folderName; },
             isset($confApp['modules']) && is_array($confApp['modules']) ? $confApp['modules'] : []
         );
         $viewPaths[] = APP_PATH.'/Resources/'.$folderName;
