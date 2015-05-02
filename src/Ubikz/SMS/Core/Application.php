@@ -171,7 +171,11 @@ class Application
             function($n) use ($folderName) { return MODULE_PATH.'/'.ucfirst($n).'/Resources/'.$folderName; },
             isset($confApp['modules']) && is_array($confApp['modules']) ? $confApp['modules'] : []
         );
-        SilexLayout::getInstance()->register(new TwigServiceProvider(), ['twig.path' => $viewPaths]);
+        $viewPaths[] = APP_PATH.'/Resources/'.$folderName;
+        SilexLayout::getInstance()->register(
+            new TwigServiceProvider(),
+            ['twig.path' => $viewPaths, 'twig.form.templates' => 'bootstrap.html.twig']
+        );
 
         // We define twig globals, filters, extensions etc. (if needed)
         $app = SilexLayout::getInstance();
@@ -194,7 +198,7 @@ class Application
             if (!is_null($route = $request->attributes->get('_controller')) && is_string($route)) {
                 $regexp = '/^.+\\\(\w+)Controller::(\w+)Action$/i';
                 // Default template
-                $twigTmpl = preg_replace($regexp, '${1}/${2}.twig', $route);
+                $twigTmpl = preg_replace($regexp, '${1}/${2}.html.twig', $route);
                 foreach ($viewPaths as $viewPath) {
                     if (!empty($twigTmpl) && file_exists(sprintf('%s/%s', $viewPath, $twigTmpl))) {
                         SilexLayout::setService('twig.currentTmpl', $twigTmpl);

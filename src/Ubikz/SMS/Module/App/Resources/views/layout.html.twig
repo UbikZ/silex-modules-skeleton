@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+
+{% block javascripts_head %}{% endblock %}
+
+{% block javascripts_bottom %}
+    <script type="application/javascript" src="{{ asset('/js/vendor.min.js') }}"></script>
+    <script type="application/javascript" src="{{ asset('/js/application.min.js') }}"></script>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('/css/vendor.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('/css/application.min.css') }}" />
+{% endblock %}
+
+{% block body %}{% endblock %}
