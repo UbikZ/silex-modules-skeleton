@@ -7,8 +7,7 @@ use Monolog\Logger;
 use Silex\Application;
 
 /**
- * Class Layout
- * @package Ubikz\SMS\Core\Silex
+ * Class Layout.
  */
 class Layout
 {
@@ -30,6 +29,7 @@ class Layout
     /**
      * @param $serviceName
      * @param bool $throw
+     *
      * @return mixed
      */
     public static function getService($serviceName, $throw = true)
@@ -55,7 +55,6 @@ class Layout
         self::getInstance()[$serviceName] = $element;
     }
 
-
     /**
      * @param $serviceName
      */
@@ -70,6 +69,7 @@ class Layout
 
     /**
      * @param $serviceName
+     *
      * @return bool
      */
     public static function issetService($serviceName)
