@@ -109,8 +109,8 @@ class Application
         SilexLayout::setService('debug', $this->debug = isset($confApp['debug']) ? $confApp['debug'] : false);
 
         // PHP Settings
-        if (isset($conf['php_settings']) && is_array($conf['php_settings'])) {
-            foreach ($conf['php_settings'] as $key => $value) {
+        if (isset($this->conf['php_settings']) && is_array($this->conf['php_settings'])) {
+            foreach ($this->conf['php_settings'] as $key => $value) {
                 if (false === @ini_set($key, $value)) {
                     throw new InvalidConfigurationException('Conf `'.$key.'` => `'.$value.'` does not exist.');
                 }
@@ -179,7 +179,7 @@ class Application
 
         // We define twig globals, filters, extensions etc. (if needed)
         $app = SilexLayout::getInstance();
-        SilexLayout::setService('twig', $app->share($app->extend('twig', function ($twig, $app) {
+        SilexLayout::setService('twig', $app->share($app->extend('twig', function ($twig) {
             /* @var $twig \Twig_Environment */
             // Gestion de l'i18n
             $twig->addExtension(new \Twig_Extensions_Extension_I18n());
@@ -279,7 +279,7 @@ class Application
 
     /**
      * @param $e \Exception
-     * @param null $channel
+     * @param null|string $channel
      */
     private function handleException($e, $channel = null)
     {
