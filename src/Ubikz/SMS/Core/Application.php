@@ -268,7 +268,7 @@ class Application
                 function ($app) use ($logPath, $channel) {
                     /** @var Logger $log */
                     $log = new $app['monolog.logger.class']($channel);
-                    $handler = new StreamHandler($logPath.'/'.$channel.'.log');
+                    $handler = new StreamHandler($logPath.'/'.APPLICATION_ENV.'.'.$channel.'.log');
                     $log->pushHandler($handler);
 
                     return $log;
