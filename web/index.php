@@ -12,7 +12,7 @@ define('SOURCE_PATH', ROOT_PATH.'/src');
 define('VENDOR_PATH', ROOT_PATH.'/vendor');
 define('LOG_PATH', APP_PATH.'/logs');
 define('CONF_PATH', APP_PATH.'/config');
-define('MODULE_PATH', SOURCE_PATH.'/Ubikz/SMS/Module');
+define('MODULE_PATH', SOURCE_PATH.'/Module');
 
 require VENDOR_PATH.'/autoload.php';
 

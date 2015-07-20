@@ -11,6 +11,7 @@ parameters:
   settings_statup_errors: false
   settings_error_log:     php_error.log
 
+  app_namespace:      Ubikz\SMS
   app_debug:          true
   app_upload_path:    web/uploads
   app_template_path:  views

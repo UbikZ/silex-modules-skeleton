@@ -6,6 +6,7 @@ config.app:
 
   application:
      modules:               [app]
+     namespace:             "%app_namespace%"
      debug:                 "%app_debug%"
      upload:
        path:                "%app_upload_path%"

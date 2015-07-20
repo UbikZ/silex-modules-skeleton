@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests;
+namespace Ubikz\SMS\Tests;
 
 class SilexModulesSkeletonExempleTest extends \PHPUnit_Framework_TestCase
 {

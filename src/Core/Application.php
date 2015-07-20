@@ -95,7 +95,6 @@ class Application
         if (!file_exists($paramFile = CONF_PATH.'/parameters.yml')) {
             throw new InvalidFileException('Parameters file `'.$paramFile.'` not found.');
         }
-
         SilexLayout::getInstance()->register(new ConfigServiceProvider($paramFile));
         SilexLayout::getInstance()->register(new ConfigServiceProvider(
             $confFile,
@@ -227,7 +226,12 @@ class Application
                 foreach ($conf as $name => $route) {
                     SilexLayout::getInstance()->match(
                         $route['pattern'],
-                        sprintf('Ubikz\\SMS\\Module\\%s\\Controller\\%s', ucfirst($module), $route['defaults']['_controller'])
+                        sprintf(
+                            '%s\\Module\\%s\\Controller\\%s',
+                            $confApp['namespace'],
+                            ucfirst($module),
+                            $route['defaults']['_controller']
+                        )
                     )->bind($name)->method(isset($route['method']) ? $route['method'] : 'GET');
                 }
             }
