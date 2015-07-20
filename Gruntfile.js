@@ -35,7 +35,7 @@ module.exports = function(grunt) {
   // Module static configuration (before concat)
   grunt.registerTask("prepareModules", "Finds and prepares modules for concatenation.", function() {
     var concat = grunt.config.get('concat') || {};
-    grunt.file.expand("src/Ubikz/SMS/Module/*").forEach(function (dir) {
+    grunt.file.expand("src/Module/*").forEach(function (dir) {
       var dirName = dir.substr(dir.lastIndexOf('/')+1);
 
       concat[dirName+'_js'] = {
